@@ -746,7 +746,7 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
   - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
   - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
 
-5. Optional: Frontend + Backend (1 คะแนน)
+5. Optional: Frontend + Backend
 - `image` เป็นภาพขนาดไม่เกิน 1 MB
   - คำใบ้ : frontend นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
   - คำใบ้ : backend ใช้ multer

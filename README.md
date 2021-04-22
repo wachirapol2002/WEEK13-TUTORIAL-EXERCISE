@@ -9,7 +9,7 @@
 ## Clone / Download this project
 
 ```bash
-git clone https://github.com/it-web-pro/WEEK10-EXERCISE.git
+git clone https://github.com/it-web-pro/WEEK12-EXERCISE.git
 ```
 
 ## Start Backend Server

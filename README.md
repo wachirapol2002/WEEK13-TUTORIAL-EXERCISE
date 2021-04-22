@@ -310,7 +310,6 @@ File: backend/router/user.js
   |     res.status(400).json(err)
   |   }  
   |
-- |   res.send('ok')
 + |   const conn = await pool.getConnection()
 + |   await conn.beginTransaction()
 + |

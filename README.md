@@ -670,3 +670,26 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
   | }
   | </script>
 ```
+
+# Exercise
+
+![exercise](./imgs/exercise.jpg)
+
+**ให้นักศึกษาเพิ่มการเพิ่ม Field ใหม่ ทั้งส่วน frontend, backend และ database สำหรับหน้า Create Blog ดังนี้**
+
+- `start_date` วันที่โพสต์ (yyyy-mm-dd)
+- `end_date` วันสิ้นสุดโพสต์ (yyyy-mm-dd)
+- `reference` เพื่อเก็บ url ที่นำมาใช้ในบทความ
+
+**ให้นักศึกษาเพิ่มการ Validate ทั้งส่วน frontend และ backend ในหน้า Create Blog ดังนี้**
+
+- `image` เป็นภาพขนาดไม่เกิน 1 MB
+  - คำใบ้ : นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
+- `title` ต้องกรอก เป็นตัวอักษรเท่านั้น ห้ามมีตัวเลข และมีความยาวระหว่าง 10-25 ตัวอักษร
+- `content` ต้องกรอก และมีความยาวขั้นต่ำ 50 ตัวอักษร
+- `status` กำหนดให้รับค่าส่วน backend เป็น string `'status_private'` หรือ `'status_public'` เท่านั้น
+- `start_date` และ `end_date` 
+  - ไม่จำเป็นต้องกรอก 
+  - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
+  - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
+- `reference` รับค่าเป็น url เท่านั้น

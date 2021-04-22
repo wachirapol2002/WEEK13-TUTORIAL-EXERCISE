@@ -27,6 +27,14 @@ const schema = Joi.object({
     sex: Joi.string().valid('male', 'female'),
     birthdate: Joi.date().max(Date.now()),
     student_id: Joi.string().min(8).max(8).custom(it_student)
+}).custom((obj, helper) => {
+    let birthyear = obj.birthdate.getFullYear()
+    let thisYear = new Date().getFullYear()
+    
+    if (thisYear - birthyear != obj.age) {
+        throw new Joi.ValidationError('อายุไม่ตรงกับวันเกิด')
+    }
+    return obj
 })
 
 app.post('/', async (req, res, next) => {

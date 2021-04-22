@@ -60,7 +60,7 @@ npm update --force
 
 ในตัวอย่างนี้เราจะเริ่มจากการทำฝั่ง backend ก่อน และเทส API ที่สร้างมาด้วย Postman เมื่อเราทดสอบจนมั่นใจแล้ว ก็จะไปสร้าง frontend และเรียกใช้ API ที่สร้างขึ้นมา
 
-# Backend
+# Backend (1 คะแนน)
 
 ## 1. สร้าง route ใหม่ที่ฝั่ง backend
 
@@ -310,6 +310,7 @@ File: backend/router/user.js
   |     res.status(400).json(err)
   |   }  
   |
+- |   res.send('ok')
 + |   const conn = await pool.getConnection()
 + |   await conn.beginTransaction()
 + |
@@ -337,7 +338,45 @@ File: backend/router/user.js
   | })
 ```
 
-# Frontend
+# Frontend (1 คะแนน)
+
+## 0. Install Vuelidate
+
+ทำการ install Vuelidate ในโฟลเดอร์ frontend ด้วยคำสั่ง
+```bash
+cd frontend # ทำให้มั่นใจว่าตัวเองอยู่ในโฟลเดอร์ frontend
+npm install vuelidate
+```
+
+ทำการเปิดการใช้งาน Plugin ด้วย Vue.use()
+```javascript
+--------------------------------------------------------------------------------
+File: frontend/src/main.js
+--------------------------------------------------------------------------------
+  | import Vue from 'vue'
+  | import App from './App.vue'
+  | import router from './router'
+  | // import { fab } from '@fortawesome/free-brands-svg-icons'
+  | import { library } from '@fortawesome/fontawesome-svg-core'
+  | import { fas } from '@fortawesome/free-solid-svg-icons'
+  | import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
++ | import Vuelidate from 'vuelidate'
+  | 
+  | import 'bulma/css/bulma.css'
+  | 
+  | library.add(fas)
+  | 
+  | Vue.component('icon', FontAwesomeIcon)
+  | 
++ | Vue.use(Vuelidate)
+  | 
+  | Vue.config.productionTip = false
+  | 
+  | new Vue({
+  |   router,
+  |   render: h => h(App)
+  | }).$mount('#app')
+```
 
 ## 1. สร้างไฟล์ `Signup.vue` ใน `frontend/src/views/users/`
 
@@ -683,13 +722,31 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
 
 **ให้นักศึกษาเพิ่มการ Validate ทั้งส่วน frontend และ backend ในหน้า Create Blog ดังนี้**
 
-- `image` เป็นภาพขนาดไม่เกิน 1 MB
-  - คำใบ้ : นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
+1. Backend Validation (0.5 คะแนน)
 - `title` ต้องกรอก เป็นตัวอักษรเท่านั้น ห้ามมีตัวเลข และมีความยาวระหว่าง 10-25 ตัวอักษร
 - `content` ต้องกรอก และมีความยาวขั้นต่ำ 50 ตัวอักษร
 - `status` กำหนดให้รับค่าส่วน backend เป็น string `'status_private'` หรือ `'status_public'` เท่านั้น
-- `start_date` และ `end_date` 
+- `reference` รับค่าเป็น url เท่านั้น
+
+2. Frontend Validation (0.5 คะแนน)
+- `title` ต้องกรอก เป็นตัวอักษรเท่านั้น ห้ามมีตัวเลข และมีความยาวระหว่าง 10-25 ตัวอักษร
+- `content` ต้องกรอก และมีความยาวขั้นต่ำ 50 ตัวอักษร
+- `status` กำหนดให้รับค่าส่วน backend เป็น string `'status_private'` หรือ `'status_public'` เท่านั้น
+- `reference` รับค่าเป็น url เท่านั้น
+
+3. Backend Validation (1 คะแนน)
+- `start_date` และ `end_date`
   - ไม่จำเป็นต้องกรอก 
   - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
   - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
-- `reference` รับค่าเป็น url เท่านั้น
+
+4. Frontend Validation (1 คะแนน)
+- `start_date` และ `end_date`
+  - ไม่จำเป็นต้องกรอก 
+  - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
+  - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
+
+5. Optional: Frontend + Backend (1 คะแนน)
+- `image` เป็นภาพขนาดไม่เกิน 1 MB
+  - คำใบ้ : frontend นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
+  - คำใบ้ : backend ใช้ multer

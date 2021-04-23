@@ -163,7 +163,7 @@ File: backend/router/user.js
   | 
   | router.post('/user/signup', (req, res, next) => {
   |   try {
-  |     signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  
@@ -202,7 +202,7 @@ File: backend/router/user.js
   | 
   | router.post('/user/signup', (req, res, next) => {
   |   try {
-  |     signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  
@@ -254,7 +254,7 @@ File: backend/router/user.js
   | 
   | router.post('/user/signup', (req, res, next) => {
   |   try {
-  |     signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  
@@ -310,7 +310,7 @@ File: backend/router/user.js
   | 
   | router.post('/user/signup', (req, res, next) => {
   |   try {
-  |     signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  

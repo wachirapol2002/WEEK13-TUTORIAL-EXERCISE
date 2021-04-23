@@ -51,14 +51,21 @@
           <textarea v-model="contentBlog" class="textarea" placeholder="Textarea"></textarea>
         </div>
       </div>
+      
+      <div class="field">
+        <label class="label">Reference</label>
+        <div class="control">
+          <input class="input" type="url" v-model="reference" placeholder="e.g. https://www.google.com">
+        </div>
+      </div>
 
       <div class="control mb-3">
         <label class="radio">
-          <input v-model="statusBlog" type="radio" name="answer" value="01" />
+          <input v-model="statusBlog" type="radio" name="answer" value="status_private" />
           Private
         </label>
         <label class="radio">
-          <input v-model="statusBlog" type="radio" name="answer" value="02" />
+          <input v-model="statusBlog" type="radio" name="answer" value="status_public" />
           Public
         </label>
       </div>
@@ -69,6 +76,27 @@
             <input v-model="pinnedBlog" type="checkbox" />
             Pinned
           </label>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label">วันที่โพสต์</label>
+            <div class="control">
+              <input class="input" type="date" v-model="start_date">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">วันสิ้นสุดโพสต์</label>
+            <div class="control">
+              <input class="input" type="date" v-model="end_date">
+            </div>
+          </div>
         </div>
       </div>
 
@@ -96,7 +124,10 @@ export default {
       titleBlog: "",
       contentBlog: "",
       pinnedBlog: false,
-      statusBlog: "01",
+      statusBlog: "status_public",
+      reference: "",
+      start_date: "",
+      end_date: ""
     };
   },
   methods: {
@@ -117,7 +148,10 @@ export default {
       formData.append("title", this.titleBlog);
       formData.append("content", this.contentBlog);
       formData.append("pinned", this.pinnedBlog ? 1 : 0);
-      formData.append("status", "01");
+      // formData.append("reference", this.reference);
+      // formData.append("start_date", this.start_date);
+      // formData.append("end_date", this.end_date);
+      formData.append("status", this.statusBlog);
       this.images.forEach((image) => {
         formData.append("myImage", image);
       });

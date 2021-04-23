@@ -6,6 +6,10 @@
 
 # Setup
 
+## Setup Database
+
+import `db/wepro-2.sql`
+
 ## Clone / Download this project
 
 ```bash

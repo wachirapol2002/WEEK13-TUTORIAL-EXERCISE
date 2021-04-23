@@ -79,7 +79,7 @@ File: backend/router/user.js
 + |
 + | router = express.Router();
 + |
-+ | router.post('/user/signup', (req, res, next) => {
++ | router.post('/user/signup', async (req, res, next) => {
 + |     res.send('ok')
 + | })
 + |
@@ -136,7 +136,7 @@ File: backend/router/user.js
   | 
   | router.post('/user/signup', async (req, res, next) => {
 + |   try {
-+ |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
++ |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
 + |   } catch (err) {
 + |     return res.status(400).json(err)
 + |   }  
@@ -161,12 +161,12 @@ File: backend/router/user.js
 ? |   last_name: '',// ต้องกรอก ไม่เกิน 150 ตัวอักษร
   | }) 
   | 
-  | router.post('/user/signup', (req, res, next) => {
+  | router.post('/user/signup', async (req, res, next) => {
   |   try {
-  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
-  |   }  
+  |   }
   |
   |   res.send('ok')
   | })
@@ -200,9 +200,9 @@ File: backend/router/user.js
 ? |   confirm_password: '', // ต้องเหมือนกับ password
   | })
   | 
-  | router.post('/user/signup', (req, res, next) => {
+  | router.post('/user/signup', async (req, res, next) => {
   |   try {
-  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  
@@ -252,9 +252,9 @@ File: backend/router/user.js
 + |   username: Joi.string().required().min(5).external(usernameValidator),
   | }) 
   | 
-  | router.post('/user/signup', (req, res, next) => {
+  | router.post('/user/signup', async (req, res, next) => {
   |   try {
-  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  
@@ -308,9 +308,9 @@ File: backend/router/user.js
   |   username: Joi.string().required().min(5).external(usernameValidator),
   | }) 
   | 
-  | router.post('/user/signup', (req, res, next) => {
+  | router.post('/user/signup', async (req, res, next) => {
   |   try {
-  |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
+  |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
   |     res.status(400).json(err)
   |   }  

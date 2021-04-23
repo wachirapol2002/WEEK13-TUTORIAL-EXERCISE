@@ -134,11 +134,11 @@ File: backend/router/user.js
 + |   mobile: Joi.string().required().pattern(/0[0-9]{9}/),
 + | }) 
   | 
-  | router.post('/user/signup', (req, res, next) => {
+  | router.post('/user/signup', async (req, res, next) => {
 + |   try {
-+ |     signupSchema.validateAsync(request.body,  { abortEarly: false })
++ |     await signupSchema.validateAsync(request.body,  { abortEarly: false })
 + |   } catch (err) {
-+ |     res.status(400).json(err)
++ |     return res.status(400).json(err)
 + |   }  
   |
   |   res.send('ok')

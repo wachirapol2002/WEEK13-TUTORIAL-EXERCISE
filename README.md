@@ -165,7 +165,7 @@ File: backend/router/user.js
   |   try {
   |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
-  |     res.status(400).json(err)
+  |     return res.status(400).json(err)
   |   }
   |
   |   res.send('ok')
@@ -204,7 +204,7 @@ File: backend/router/user.js
   |   try {
   |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
-  |     res.status(400).json(err)
+  |     return res.status(400).json(err)
   |   }  
   |
   |   res.send('ok')
@@ -256,7 +256,7 @@ File: backend/router/user.js
   |   try {
   |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
-  |     res.status(400).json(err)
+  |     return res.status(400).json(err)
   |   }  
   |
   |   res.send('ok')
@@ -312,7 +312,7 @@ File: backend/router/user.js
   |   try {
   |     await signupSchema.validateAsync(req.body,  { abortEarly: false })
   |   } catch (err) {
-  |     res.status(400).json(err)
+  |     return res.status(400).json(err)
   |   }  
   |
 - |   res.send('ok')

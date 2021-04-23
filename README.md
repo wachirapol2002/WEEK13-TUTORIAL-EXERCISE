@@ -274,6 +274,7 @@ Algorithm ที่เป็นที่นิยมในการ hash passwor
 File: backend/router/user.js
 --------------------------------------------------------------------------------
   | // ...
++ | const bcrypt = require('bcrypt')
   |
   | const passwordValidator = (value, helpers) => {
   |   if (value.length < 8) {

@@ -1,6 +1,6 @@
-# WEEK12-EXERCISE
+# WEEK13-TUTORIAL-EXERCISE
 
-## Week 12 Exercise - Form Validation
+## Week 13 Exercise - Form Validation
 
 ในสัปดาห์นี้เราจะมาเรียนเกี่ยวกับการทำ Validation หรือการ ตรวจสอบความถูกต้องของข้อมูล ซึ่งในทาง programming แล้วสิ่งนี้เป็นสิ่งที่สำคัญมาก เพราะว่าการเขียนโปรแกรมไม่ได้ทำอะไรมากไปกว่าการ คำนวณและย้ายที่ข้อมูล ถ้าข้อมูลที่เราเอามาใส่ในโปรแกรมของเราเป็นขยะ โปรแกรมของเราก็จะกลายเป็นโปรแกรมจัดการขยะนั่นเอง
 
@@ -13,7 +13,7 @@ import `db/wepro-2.sql`
 ## Clone / Download this project
 
 ```bash
-git clone https://github.com/it-web-pro/WEEK12-EXERCISE.git
+git clone https://github.com/it-web-pro/WEEK13-TUTORIAL-EXERCISE.git
 ```
 
 ## Start Backend Server
@@ -25,7 +25,7 @@ npm install joi bcrypt
 npm run serve
 ```
 
-เปิด browser ไปที่ http://localhost:3000 เพื่อเช็คว่าใช้งานได้หรือไม่
+เปิด browser แล้วไปที่ http://localhost:3000 เพื่อเช็คว่าใช้งานได้หรือไม่
 
 ## Start Frontend Server
 
@@ -56,7 +56,7 @@ npm update --force
 - confirm password
 - first_name ต้องกรอก ไม่เกิน 150 ตัวอักษร
 - last_name ต้องกรอก ไม่เกิน 150 ตัวอักษร
-- email ต้องกรอก และเป็นอึเมล์ที่ถูกต้อง
+- email ต้องกรอก และเป็นอีเมล์ที่ถูกต้อง
 - mobile ต้องกรอก และเป็นเบอร์มือถือที่ถูกต้อง
 - picture มีหรือไม่มีก็ได้ ถ้ามีเป็นภาพขนาดไม่เกิน 2 MB
 
@@ -64,7 +64,7 @@ npm update --force
 
 ในตัวอย่างนี้เราจะเริ่มจากการทำฝั่ง backend ก่อน และเทส API ที่สร้างมาด้วย Postman เมื่อเราทดสอบจนมั่นใจแล้ว ก็จะไปสร้าง frontend และเรียกใช้ API ที่สร้างขึ้นมา
 
-# Backend (1 คะแนน)
+# Backend
 
 ## 1. สร้าง route ใหม่ที่ฝั่ง backend
 
@@ -343,7 +343,7 @@ File: backend/router/user.js
   | })
 ```
 
-# Frontend (1 คะแนน)
+# Frontend
 
 ## 0. Install Vuelidate
 
@@ -353,7 +353,10 @@ cd frontend # ทำให้มั่นใจว่าตัวเองอย
 npm install vuelidate
 ```
 
-ทำการเปิดการใช้งาน Plugin ด้วย Vue.use()
+### What is Vuelidate?
+`Vuelidate` เป็น library สำหรับทำการ validate form สำหรับ Vue.js โดยเฉพาะ -> [Website](https://vuelidate.js.org/#getting-started)
+
+ก่อนอื่นเรามทำการเปิดการใช้งาน Plugin `Vuelidate` ด้วย Vue.use()
 ```javascript
 --------------------------------------------------------------------------------
 File: frontend/src/main.js
@@ -483,7 +486,13 @@ File: frontend/src/views/Signup.vue
 
 ## 5. ทำ frontend validation
 
-### 5.1 Valiadate `email`
+ในขั้นตอนนี้เราจะมาลองเริ่มใช้งาน `Vuelidate` กันนะครับ แต่ก่อนอื่นเรามาลองดูว่า `Vuelidate` ทำอะไรได้บ้างคร่าว และลองเล่น online tutorial ได้ที่ [Online Tutorial](https://vuelidate.js.org/#sub-basic-form)
+
+### 5.1 Validate `email`
+
+เราจะมาลอง validate field `email` กันนะครับ โดย `Vuelidate` เขาก็มี built-in validators ให้สามารถใช้งานได้ไม่จำเป็นต้องเขียนเอง - [รายการ Built-in Validators ที่มีให้เลือกใช้งาน](https://vuelidate.js.org/#sub-builtin-validators)
+
+โดยในตัวอย่างนี้เราจะใช้งาน `email` และ `required` validators กันนะครับ
 
 ```javascript
 --------------------------------------------------------------------------------
@@ -535,6 +544,8 @@ c |   },
 ```
 
 ### 5.2 Validate `mobile`
+
+เราจะมาลอง validate field `mobile` โดยการสร้าง custom validator กันนะครับ - [Custom Validators](https://vuelidate.js.org/#sub-simplest-example)
 
 ```javascript
 --------------------------------------------------------------------------------
@@ -592,8 +603,6 @@ c |     },
   | </script>
 ```
 
-> จากนี้จะไม่แสดง template เพราะว่าก็ทำเหมือนกันหมดแค่เปลี่ยนตัวแปรเฉย ๆ "ให้ทำเอง"
-
 ### 5.3 Validate `password` และ `confirm_password`
 
 ```javascript
@@ -650,6 +659,8 @@ c |     },
 ```
 
 ### 5.4 Validate `username`, `first_name` และ `last_name`
+
+**Field ที่เหลือ ลองทำกันดูเองนะครับ**
 
 - username ต้องกรอก ไม่ต่ำกว่า 5 ตัวอักษร ไม่เกิน 20 ตัวอักษร (ส่วนการเช็คว่าซ้ำกับคนอื่นหรือไม้ ใข้ backend validation แทน)
 - first_name ต้องกรอก ไม่เกิน 150 ตัวอักษร
@@ -717,6 +728,8 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
 
 # Exercise
 
+สำหรับใครที่อยากลองใช้งาน `Joi` และ `Vuelidate` สามารถลองทำแบบฝึกหัดด้านล่างได้นะครับ (ไม่ต้องส่ง ไม่มีคะแนน สำหรับให้ซ้อมมือ)
+
 ![exercise](./imgs/exercise.jpg)
 
 **ให้นักศึกษาเพิ่มการเพิ่ม Field ใหม่ ทั้งส่วน frontend, backend และ database สำหรับหน้า Create Blog ดังนี้**
@@ -727,31 +740,31 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
 
 **ให้นักศึกษาเพิ่มการ Validate ทั้งส่วน frontend และ backend ในหน้า Create Blog ดังนี้**
 
-1. Backend Validation (0.5 คะแนน)
+1. Backend Validation
 - `title` ต้องกรอก เป็นตัวอักษรเท่านั้น ห้ามมีตัวเลข และมีความยาวระหว่าง 10-25 ตัวอักษร
 - `content` ต้องกรอก และมีความยาวขั้นต่ำ 50 ตัวอักษร
 - `status` กำหนดให้รับค่าส่วน backend เป็น string `'status_private'` หรือ `'status_public'` เท่านั้น
 - `reference` รับค่าเป็น url เท่านั้น
 
-2. Frontend Validation (0.5 คะแนน)
+2. Frontend Validation
 - `title` ต้องกรอก เป็นตัวอักษรเท่านั้น ห้ามมีตัวเลข และมีความยาวระหว่าง 10-25 ตัวอักษร
 - `content` ต้องกรอก และมีความยาวขั้นต่ำ 50 ตัวอักษร
 - `status` กำหนดให้รับค่าส่วน backend เป็น string `'status_private'` หรือ `'status_public'` เท่านั้น
 - `reference` รับค่าเป็น url เท่านั้น
 
-3. Backend Validation (1 คะแนน)
+3. Backend Validation
 - `start_date` และ `end_date`
   - ไม่จำเป็นต้องกรอก 
   - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
   - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
 
-4. Frontend Validation (1 คะแนน)
+4. Frontend Validation
 - `start_date` และ `end_date`
   - ไม่จำเป็นต้องกรอก 
   - ถ้ามีการกรอก ต้องกรอกทั้ง `start_date` และ `end_date`
   - ถ้ามีการกรอก `start_date` ต้องเป็นวันที่ ที่มาก่อน `end_date`
 
-5. Optional: Frontend + Backend
+5. Frontend + Backend - Upload Image Validation
 - `image` เป็นภาพขนาดไม่เกิน 1 MB
   - คำใบ้ : frontend นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
   - คำใบ้ : backend ใช้ multer

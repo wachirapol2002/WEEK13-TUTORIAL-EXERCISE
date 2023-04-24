@@ -728,7 +728,7 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
 
 # Exercise
 
-สำหรับใครที่อยากลองใช้งาน `Joi` และ `Vuelidate` สามารถลองทำแบบฝึกหัดด้านล่างได้นะครับ (ไม่ต้องส่ง ไม่มีคะแนน สำหรับให้ซ้อมมือ)
+สำหรับใครที่อยากลองใช้งาน `Joi` และ `Vuelidate` สามารถลองทำแบบฝึกหัดด้านล่างได้นะครับ
 
 ![exercise](./imgs/exercise.jpg)
 
@@ -768,3 +768,8 @@ c |   <button class="button is-primary is-fullwidth" @click="submit()">Sign Up</
 - `image` เป็นภาพขนาดไม่เกิน 1 MB
   - คำใบ้ : frontend นักศึกษาสามารถหาขนาดภาพได้โดยใช้ `file.size`
   - คำใบ้ : backend ใช้ multer
+  
+**การให้คะแนนแบบฝึกหัด**
+- Frontend Validation -> (0.5 คะแนน)
+- Backend Validation -> (0.5 คะแนน)
+- Upload Image Validation -> (0.5 คะแนน)

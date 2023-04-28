@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const pool = require("../config");
 const fs = require("fs");
+const Joi = require('joi');
 
 router = express.Router();
 
@@ -52,10 +53,20 @@ router.put("/blogs/addlike/:blogId", async function (req, res, next) {
   }
 });
 
-router.post(
-  "/blogs",
-  upload.array("myImage", 5),
-  async function (req, res, next) {
+const addBlogSchema = Joi.object({
+  title: Joi.string().required().min(10).max(25),
+  content: Joi.string().required().min(50),
+  status: Joi.string().valid('status_private', 'status_public'),
+  reference: Joi.string().uri(),
+}) 
+
+router.post("/blogs", upload.array("myImage", 5), async function (req, res, next) {
+  console.log(req.body)
+    try {
+      await addBlogSchema.validateAsync(req.body,  { abortEarly: false })
+    } catch (err) {
+      return res.status(400).json(err)
+    }  
     if (req.method == "POST") {
       const file = req.files;
       let pathArray = [];
@@ -68,15 +79,19 @@ router.post(
       const content = req.body.content;
       const status = req.body.status;
       const pinned = req.body.pinned;
+      const start_date = req.body.start_date;
+      const end_date = req.body.end_date;
+      const reference = req.body.reference;
 
       const conn = await pool.getConnection();
       // Begin transaction
       await conn.beginTransaction();
-
+      
       try {
         let results = await conn.query(
-          "INSERT INTO blogs(title, content, status, pinned, `like`,create_date) VALUES(?, ?, ?, ?, 0,CURRENT_TIMESTAMP);",
-          [title, content, status, pinned]
+          "INSERT INTO blogs(title, content, status, pinned, `like`, create_date, create_by_id, start_date, end_date, reference) " +
+          "VALUES(?, ?, ?, ?, 0, CURRENT_TIMESTAMP, Null, ?, ?, ?);",
+          [title, content, status, pinned, start_date, end_date, reference]
         );
         const blogId = results[0].insertId;
 

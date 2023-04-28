@@ -99,7 +99,7 @@
           <div class="field">
             <label class="label">วันที่โพสต์</label>
             <div class="control">
-              <input class="input" type="date" v-model="$v.start_date.$model" :class="{'is-danger': $v.start_date.$error}">
+              <input class="input" type="date" v-model="start_date">
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
           <div class="field">
             <label class="label">วันสิ้นสุดโพสต์</label>
             <div class="control">
-              <input class="input" type="date" v-model="$v.end_date.$model" :class="{'is-danger': $v.end_date.$error}">
+              <input class="input" type="date" v-model="end_date">
             </div>
           </div>
         </div>
@@ -126,16 +126,8 @@
 </template>
 
 <script>
-import axios from "axios";
 
-import { required, minLength, maxLength, alpha, url} from 'vuelidate/lib/validators'
-
-function haveDate () {
-    if ((this.end_date && !this.start_date) || !this.end_date && this.start_date) {
-        return false;
-      }
-    return true;
-}
+import { required, email, minLength, maxLength, sameAs, alpha, url, alphaNum} from 'vuelidate/lib/validators'
 
 function dateBeforeEnd (value) {
     if (value && this.end_date) {
@@ -150,6 +142,7 @@ function dateAfterStart (value) {
       }
     return true;
 }
+import axios from "axios";
 
 export default {
   data() {
@@ -180,15 +173,6 @@ export default {
         reference: {
             url: url
         },
-        start_date:{
-          haveDate: haveDate(),
-          dateBeforeEnd: dateBeforeEnd(this.start_date)
-
-        },
-        end_date:{
-          haveDate: haveDate(),
-          dateAfterStart: dateAfterStart(this.end_date)
-        }
     },
   methods: {
     selectImages(event) {
@@ -204,26 +188,19 @@ export default {
       this.images.splice(index, 1);
     },
     submitBlog() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        let formData = new FormData();
-        formData.append("title", this.titleBlog);
-        formData.append("content", this.contentBlog);
-        formData.append("pinned", this.pinnedBlog ? 1 : 0);
-        formData.append("reference", this.reference);
-        formData.append("start_date", this.start_date);
-        formData.append("end_date", this.end_date);
-        formData.append("status", this.statusBlog);
-        this.images.forEach((image) => {
-            formData.append("myImage", image);
-        });
-
-        axios.post("http://localhost:3000/blogs", formData)
-        .then((res) => this.$router.push({name: 'home'}))
-        .catch((e) => console.log(e.response.data));
-
-      }
-
+      let formData = new FormData();
+      formData.append("title", this.titleBlog);
+      formData.append("content", this.contentBlog);
+      formData.append("pinned", this.pinnedBlog ? 1 : 0);
+      formData.append("reference", this.reference);
+      formData.append("start_date", this.start_date);
+      formData.append("end_date", this.end_date);
+      formData.append("status", this.statusBlog);
+      console.log(this.images)
+      this.images.forEach((image) => {
+        formData.append("myImage", image);
+      });
+    
 
       // Note ***************
       // ตอนเรายิง Postmant จะใช้ fromData
@@ -239,7 +216,10 @@ export default {
       // จะสังเกตุว่าใช้ myImage เป็น key เดียวกัน เลยต้องเอามา loop forEach
       // พอไปฝั่ง backend มันจะจัด file ให้เป็น Array เพื่อเอาไปใช้งานต่อได้
 
-      
+      axios
+        .post("http://localhost:3000/blogs", formData)
+        .then((res) => this.$router.push({name: 'home'}))
+        .catch((e) => console.log(e.response.data));
     },
   },
 };

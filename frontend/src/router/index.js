@@ -25,10 +25,10 @@ const routes = [
     component: () => import('../views/blogs/UpdateBlog.vue')
   },
   {
-      path: '/user/signup',
-      name: 'signup',
-      component: () => import('../views/users/Signup.vue')
-  },
+    path: '/user/signup',
+    name: 'signup',
+    component: () => import('../views/Signup.vue')
+  }
 ]
 
 const router = new VueRouter({

@@ -36,6 +36,11 @@ CREATE TABLE `blogs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- ALTER TABLE blogs
+-- ADD COLUMN `start_date` timestamp,
+-- ADD COLUMN `end_date` timestamp,
+-- ADD COLUMN `reference` VARCHAR(100)
+
 --
 -- Dumping data for table `blogs`
 --

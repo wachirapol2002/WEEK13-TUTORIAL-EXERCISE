@@ -13,9 +13,9 @@ library.add(fas)
 
 Vue.component('icon', FontAwesomeIcon)
 
-Vue.use(Vuelidate)
-
 Vue.config.productionTip = false
+
+Vue.use(Vuelidate)
 
 new Vue({
   router,

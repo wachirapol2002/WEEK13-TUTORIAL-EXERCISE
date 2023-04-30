@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const pool = require("../config");
 const fs = require("fs");
-const Joi = require('joi');
+const Joi = require('joi')
 
 router = express.Router();
 
@@ -20,7 +20,7 @@ var storage = multer.diskStorage({
     );
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage,  limits: { fileSize: 1024 * 1024 } });
 
 // Like blog that id = blogId
 router.put("/blogs/addlike/:blogId", async function (req, res, next) {
@@ -53,27 +53,27 @@ router.put("/blogs/addlike/:blogId", async function (req, res, next) {
   }
 });
 
-const addBlogSchema = Joi.object({
-  title: Joi.string().required().min(10).max(25),
-  content: Joi.string().required().min(50),
-  status: Joi.string().valid('status_private', 'status_public'),
-  reference: Joi.string().uri(),
-}) 
+router.post(
+  "/blogs",
+  upload.array("myImage", 5),
+  async function (req, res, next) {
 
-router.post("/blogs", upload.array("myImage", 5), async function (req, res, next) {
-  console.log(req.body)
-    try {
-      await addBlogSchema.validateAsync(req.body,  { abortEarly: false })
-    } catch (err) {
-      return res.status(400).json(err)
-    }  
     if (req.method == "POST") {
       const file = req.files;
+
       let pathArray = [];
 
-      if (!file) {
+      if (!file.length) {
         return res.status(400).json({ message: "Please upload a file" });
       }
+
+      const noNumber = (value, helpers) => {
+        if (value.match(/[0-9]/)) {
+          throw new Joi.ValidationError('Title must not contain number');
+        }
+
+        return value;
+      };
 
       const title = req.body.title;
       const content = req.body.content;
@@ -83,16 +83,35 @@ router.post("/blogs", upload.array("myImage", 5), async function (req, res, next
       const end_date = req.body.end_date;
       const reference = req.body.reference;
 
+
+      if (req.body.start_date || req.body.end_date) {
+        if (!req.body.start_date || !req.body.end_date) {
+          return res.status(400).json({ message: "Start date and end date must be filled" });
+        }
+      }
+
+      const newPostSchema = Joi.object({
+        title: Joi.string().min(10).max(25).custom(noNumber).required(),
+        content: Joi.string().min(50).required(),
+        status: Joi.string().valid('status_public', 'status_private').required(),
+        pinned: Joi.valid('1', '0').required(),
+        start_date: Joi.date().optional().allow('').max(Joi.ref('end_date')),
+        end_date: Joi.date().optional().allow(''),
+        reference: Joi.string().uri().optional().allow(''),
+      })
+
       const conn = await pool.getConnection();
       // Begin transaction
       await conn.beginTransaction();
-      
+
       try {
+        await newPostSchema.validateAsync(req.body, { abortEarly: false })
+
         let results = await conn.query(
-          "INSERT INTO blogs(title, content, status, pinned, `like`, create_date, create_by_id, start_date, end_date, reference) " +
-          "VALUES(?, ?, ?, ?, 0, CURRENT_TIMESTAMP, Null, ?, ?, ?);",
-          [title, content, status, pinned, start_date, end_date, reference]
+          "INSERT INTO blogs(title, content, status, pinned, `like`, `create_date`, `start_date`, `end_date`, url_reference) VALUES(?, ?, ?, ?, 0, CURRENT_TIMESTAMP, ?, ?, ?);",
+          [title, content, status === "status_public" ? '01' : '00', pinned, new Date(start_date), new Date(end_date), reference]
         );
+
         const blogId = results[0].insertId;
 
         req.files.forEach((file, index) => {
@@ -100,14 +119,17 @@ router.post("/blogs", upload.array("myImage", 5), async function (req, res, next
           pathArray.push(path);
         });
 
-        await conn.query(
-          "INSERT INTO images(blog_id, file_path, main) VALUES ?;",
-          [pathArray]
-        );
+        pathArray.forEach(async (imagePath) => {
+          await conn.query(
+            "INSERT INTO images(blog_id, file_path, main) VALUES (?, ?, ?);",
+            [imagePath[0], imagePath[1], imagePath[2]]
+          );
+        })
 
         await conn.commit();
         res.send("success!");
       } catch (err) {
+        console.log(err)
         await conn.rollback();
         return res.status(400).json(err);
       } finally {
@@ -117,6 +139,15 @@ router.post("/blogs", upload.array("myImage", 5), async function (req, res, next
     }
   }
 );
+
+router.use(function (err, req, res, next) {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    res.status(400).send({  message: 'File is too big' })
+    return 
+  }
+
+  // Handle any other errors
+})
 
 // Blog detail
 router.get("/blogs/:id", function (req, res, next) {
